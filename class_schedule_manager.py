@@ -14,6 +14,8 @@ class class_schedule_manager():
             with open('config.csv', newline='') as config:
 
                 # 学期の初期化
+
+                # 明らかに事故だから直す
                 self.period = 'first'
                 for line in config:
                     # 学期の判定と決定
