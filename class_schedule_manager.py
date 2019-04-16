@@ -1,6 +1,5 @@
 import datetime
 
-
 class class_schedule_manager():
     def __init__(self, csv_dir=''):
         self.csv_dir = csv_dir
@@ -50,27 +49,10 @@ class class_schedule_manager():
             with open(self.filename, newline='') as timetable:
                 for i, list in enumerate(timetable):
                     if i == row_num:
-                        # ここのでーたの状態 [e:b:c, ]
                         return list.split(',')
             return ["Invalid date::", "Invalid date::", "Invalid date::", "Invalid date::"]
         except:
-            return ["Don'd read::", "Don'd read::", "Don'd read::", "Don'd read::"]
-
-# 行を指定し
-
-# 行出して(曜日で分解) a:b:c:,d:e:f,g:h:i,j:k:l  extract_csv(timetable,num) : return [a:b:c,d]
-# それを時間ごとに[i]にして a:b:c
-# テキスト内の:を目印に[きょうか,ひとte,場所]にわける [a,b,c] extract_str(str,num) <- str[i] で渡す
-# これを{}に格納 { 1:[a,b,c]} 返り値で実装
-
-# def get_free_csv_data(self,filename,day_of_the_week,hours):
-#    pass
-
-# def set_schedule_mask(self):
-#    pass
-
+            return ["Don't read::", "Don't read::", "Don't read::", "Don't read::"]
 
 if __name__ == "__main__":
-    # 2019:first:1-1.csv
-    obj = class_schedule_manager()
-    print(obj.get_schedule("1-1"))
+    pass
