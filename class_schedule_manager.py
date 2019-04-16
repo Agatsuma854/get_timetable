@@ -6,7 +6,7 @@ class class_schedule_manager():
         self.csv_dir = csv_dir
         self.filename = ''
         self.period = 'first'
-        self.return_value = {}
+        self.make_table = {}
 
     def get_schedule(self, myclass, day_of_the_week=0):
 
@@ -32,30 +32,24 @@ class class_schedule_manager():
                 self.filename = (str(datetime.date.today().year - 1) + ':' + 'second' + ':' + myclass + '.csv')
                 print(self.filename)
 
-            # CSVファイルの読み込み
-            with open(self.filename, newline='') as timetable:
-                self.rawcsv = []
-                for i, list in enumerate(timetable):
-                    self.rawcsv.append(list)
+            # dict型に格納
+            if day_of_the_week == 0:
+                pass
+            else:
+                cp = self._read_csv(day_of_the_week - 1)
+                for i, data in enumerate(cp):
+                    self.make_table[i + 1] = data.split(':')
 
-                print(self.rawcsv)
+        return self.make_table
 
-                # dict型に格納
-                if day_of_the_week == 0:
-                    pass
-                elif day_of_the_week == 6:
-                    pass
-                else:
-                    pass
-
-    # except:
-    # print("tin")
-
-    def read_csv(self, csv_obj, row_num):
-        for i, list in enumerate(csv_obj):
-            if i == row_num:
-                return list.split(',')
-        return []
+    # 指定したCSVファイルを読み出し
+    def _read_csv(self, row_num):
+        with open(self.filename, newline='') as timetable:
+            for i, list in enumerate(timetable):
+                if i == row_num:
+                    # ここのでーたの状態 [e:b:c, ]
+                    return list.split(',')
+        return ["", "", "", ""]
 
 
 # 行を指定し
@@ -74,10 +68,5 @@ class class_schedule_manager():
 
 if __name__ == "__main__":
     # 2019:first:1-1.csv
-    # class_schedule_manager().get_schedule(1-1)
-    with open("2019:first:1-1.csv", newline='') as timetable:
-        rawcsv = []
-        print(timetable)
-        for i, list in enumerate(timetable):
-            list = list.split(',')
-            print(list[1])
+    obj = class_schedule_manager()
+    print(obj.get_schedule("1-1", 2))
