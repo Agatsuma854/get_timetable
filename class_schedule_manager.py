@@ -25,10 +25,8 @@ class class_schedule_manager():
             # 読み込むファイルの名前の生成
             if datetime.date.today().month >= 4:
                 self.filename = (str(datetime.date.today().year) + ':' + self.period + ':' + myclass + '.csv')
-                print(self.filename)
             else:
                 self.filename = (str(datetime.date.today().year - 1) + ':' + 'second' + ':' + myclass + '.csv')
-                print(self.filename)
 
             # dict型に格納
             if day_of_the_week == 0:
@@ -37,6 +35,8 @@ class class_schedule_manager():
                     self.datemem = 0
             else:
                 self.datemem = day_of_the_week - 1
+                if self.datemem > 4 or self.datemem < 0:
+                    self.datemem = 0
 
             cp = self._read_csv(self.datemem)
             for i, data in enumerate(cp):
@@ -46,13 +46,15 @@ class class_schedule_manager():
 
     # 指定したCSVファイルを読み出し
     def _read_csv(self, row_num):
-        with open(self.filename, newline='') as timetable:
-            for i, list in enumerate(timetable):
-                if i == row_num:
-                    # ここのでーたの状態 [e:b:c, ]
-                    return list.split(',')
-        return ["Invalid date::", "Invalid date::", "Invalid date::", "Invalid date::"]
-
+        try:
+            with open(self.filename, newline='') as timetable:
+                for i, list in enumerate(timetable):
+                    if i == row_num:
+                        # ここのでーたの状態 [e:b:c, ]
+                        return list.split(',')
+            return ["Invalid date::", "Invalid date::", "Invalid date::", "Invalid date::"]
+        except:
+            return ["Don'd read::", "Don'd read::", "Don'd read::", "Don'd read::"]
 
 # 行を指定し
 
