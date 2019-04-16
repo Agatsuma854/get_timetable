@@ -24,9 +24,9 @@ class class_schedule_manager():
 
             # 読み込むファイルの名前の生成
             if datetime.date.today().month >= 4:
-                self.filename = (str(datetime.date.today().year) + ':' + self.period + ':' + myclass + '.csv')
+                self.filename = (str(datetime.date.today().year) + '_' + self.period + '_' + myclass + '.csv')
             else:
-                self.filename = (str(datetime.date.today().year - 1) + ':' + 'second' + ':' + myclass + '.csv')
+                self.filename = (str(datetime.date.today().year - 1) + '_' + 'second' + '_' + myclass + '.csv')
 
             # dict型に格納
             if day_of_the_week == 0:
@@ -54,7 +54,7 @@ class class_schedule_manager():
                         return list.split(',')
             return ["Invalid date::", "Invalid date::", "Invalid date::", "Invalid date::"]
         except:
-            return ["Don'd read::", "Don'd read::", "Don'd read::", "Don'd read::"]
+            return ["Don't read::", "Don't read::", "Don't read::", "Don't read::"]
 
 # 行を指定し
 
