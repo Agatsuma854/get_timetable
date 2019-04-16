@@ -17,17 +17,25 @@ class class_schedule_manager():
 
             for line in config:
                 # 学期の判定と決定
-                if (datetime.date.today().year == int(line[0]) and datetime.date.today().month <= int(line[
-                                                                                                          1]) and datetime.date.today().day <= int(
-                    line[2])):
+                if (datetime.date.today().year == int(line[0]) and
+                        datetime.date.today().month <= int(line[1]) and
+                        datetime.date.today().day <= int(line[2])):
                     self.period = 'second'
 
             # 読み込むファイルの名前の生成
             if datetime.date.today().month >= 4:
-                self.filename = (str(datetime.date.today().year) + ':' + self.period + ':' + myclass + '.csv')
+                self.filename = (
+                    str(datetime.date.today().year)
+                    + '_' + self.period
+                    + '_' + myclass + '.csv'
+                )
                 print(self.filename)
             else:
-                self.filename = (str(datetime.date.today().year - 1) + ':' + 'second' + ':' + myclass + '.csv')
+                self.filename = (
+                    str(datetime.date.today().year - 1)
+                    + '_' + 'second'
+                    + '_' + myclass + '.csv'
+                )
                 print(self.filename)
 
             # dict型に格納
@@ -51,7 +59,10 @@ class class_schedule_manager():
                 if i == row_num:
                     # ここのでーたの状態 [e:b:c, ]
                     return list.split(',')
-        return ["Invalid date::", "Invalid date::", "Invalid date::", "Invalid date::"]
+        return [
+            "Invalid date::", "Invalid date::",
+            "Invalid date::", "Invalid date::"
+        ]
 
 
 # 行を指定し
