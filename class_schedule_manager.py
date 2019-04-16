@@ -9,8 +9,6 @@ class class_schedule_manager():
         self.make_table = {}
 
     def get_schedule(self, myclass, day_of_the_week=0):
-
-        # try:
         # config.csvファイルの読み込み
         with open('config.csv', newline='') as config:
 
@@ -34,11 +32,15 @@ class class_schedule_manager():
 
             # dict型に格納
             if day_of_the_week == 0:
-                pass
+                self.datemem = datetime.date.today().weekday()
+                if self.datemem > 4:
+                    self.datemem = 0
             else:
-                cp = self._read_csv(day_of_the_week - 1)
-                for i, data in enumerate(cp):
-                    self.make_table[i + 1] = data.split(':')
+                self.datemem = day_of_the_week - 1
+
+            cp = self._read_csv(self.datemem)
+            for i, data in enumerate(cp):
+                self.make_table[i + 1] = data.split(':')
 
         return self.make_table
 
@@ -49,14 +51,14 @@ class class_schedule_manager():
                 if i == row_num:
                     # ここのでーたの状態 [e:b:c, ]
                     return list.split(',')
-        return ["", "", "", ""]
+        return ["Invalid date::", "Invalid date::", "Invalid date::", "Invalid date::"]
 
 
 # 行を指定し
 
 # 行出して(曜日で分解) a:b:c:,d:e:f,g:h:i,j:k:l  extract_csv(timetable,num) : return [a:b:c,d]
 # それを時間ごとに[i]にして a:b:c
-# テキスト内の:を目印に[きょうか,ひと,場所]にわける [a,b,c] extract_str(str,num) <- str[i] で渡す
+# テキスト内の:を目印に[きょうか,ひとte,場所]にわける [a,b,c] extract_str(str,num) <- str[i] で渡す
 # これを{}に格納 { 1:[a,b,c]} 返り値で実装
 
 # def get_free_csv_data(self,filename,day_of_the_week,hours):
@@ -69,4 +71,4 @@ class class_schedule_manager():
 if __name__ == "__main__":
     # 2019:first:1-1.csv
     obj = class_schedule_manager()
-    print(obj.get_schedule("1-1", 2))
+    print(obj.get_schedule("1-1"))
