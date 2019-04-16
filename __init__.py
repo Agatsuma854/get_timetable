@@ -1,0 +1,1 @@
+from .class_schedule_manager import class_schedule_manager
