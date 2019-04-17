@@ -96,6 +96,7 @@ class class_schedule_manager():
                 newline='', encoding="utf-8") as timetable:
             for i, row in enumerate(timetable):
                 if i == row_num:
+                    row = row.strip()
                     # ここのでーたの状態 [e:b:c, ]
                     return row.split(',')
         return [
