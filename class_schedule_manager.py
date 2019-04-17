@@ -1,5 +1,7 @@
 import datetime
 
+import os
+
 
 class class_schedule_manager():
     """指定したクラスの時間割を取得します"""
@@ -29,7 +31,9 @@ class class_schedule_manager():
             など
         """
         # config.csvファイルの読み込み
-        with open('config.csv', newline='') as config:
+        with open(os.path.join(os.path.abspath(
+                os.path.dirname(__file__)), 'config.csv'),
+                newline='', encoding="utf-8") as config:
 
             # 学期の初期化
             self.period = 'first'
@@ -87,7 +91,9 @@ class class_schedule_manager():
             ['地理', '矢澤', '教室'] など
             ファイルのコンマで要素を分けてリスト化したものを返す
         """
-        with open(self.filename, newline='', encoding="utf-8") as timetable:
+        with open(os.path.join(os.path.abspath(
+                os.path.dirname(__file__)), self.filename), 
+                newline='', encoding="utf-8") as timetable:
             for i, row in enumerate(timetable):
                 if i == row_num:
                     # ここのでーたの状態 [e:b:c, ]
