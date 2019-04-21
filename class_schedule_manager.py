@@ -4,7 +4,16 @@ import os
 
 
 class class_schedule_manager():
-    """指定したクラスの時間割を取得します"""
+    """指定したクラスの時間割を取得します
+
+    Examples
+    --------
+    >>> l = ["1-1", "火"]
+    >>> m = class_schedule_manager()
+    >>> weekday = m.day_str_converter(l[1])
+    >>> m.get_schedule(l[0], weekday)
+    {1: ['地理', '矢澤', '教室'], 2: ['総合工学基礎', ], }
+    """
     def __init__(self, csv_dir=''):
         self.csv_dir = csv_dir
         self.filename = ''
@@ -18,11 +27,13 @@ class class_schedule_manager():
         ----------
         myclass : str
             1学年は `1-1` 表記
-            上位学年は `IS3` など大文字で
+            上位学年は `IS3` など半角大文字で
 
         day_of_the_week : int
             0...今日分
+            引数指定がなければ本日分を返します
             その他の曜日指定は datetime.date.weekday() +1
+            範囲: 0~5
 
         Return
         ------
@@ -103,6 +114,12 @@ class class_schedule_manager():
             "Invalid date::", "Invalid date::",
             "Invalid date::", "Invalid date::"
         ]
+
+
+    def day_str_converter(self, week : str):
+        weeks_ja = ["今日", "月", "火", "水", "木", "金"]
+        if week in weeks_ja:
+            return weeks_ja.index(week)
 
 
 # 行を指定し
