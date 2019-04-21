@@ -121,7 +121,7 @@ class class_schedule_manager():
         if week in weeks_ja:
             return (weeks_ja.index(week), week)
         elif "明日" in week:
-            num = datetime.date.today().weekday() + 2
+            num = (datetime.date.today().weekday() + 2) % 7
             try:
                 return (num, weeks_ja[num])
             except IndexError:
