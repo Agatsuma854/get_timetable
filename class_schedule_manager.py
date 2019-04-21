@@ -125,9 +125,9 @@ class class_schedule_manager():
             try:
                 return (num, weeks_ja[num])
             except IndexError:
-                return (-1, "Invalid")
+                return (0, "月")
         else:
-            return (-1, "Invalid")
+            return (0, "月")
 
 
 # 行を指定し
