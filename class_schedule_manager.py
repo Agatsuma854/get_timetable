@@ -120,6 +120,8 @@ class class_schedule_manager():
         weeks_ja = ["今日", "月", "火", "水", "木", "金"]
         if week in weeks_ja:
             return weeks_ja.index(week)
+        else:
+            return 0
 
 
 # 行を指定し
