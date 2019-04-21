@@ -126,15 +126,15 @@ class class_schedule_manager():
             try:
                 return (num, weeks_ja[num])
             except IndexError:
-                return (0, "月")
+                return (1, "月")
         elif "明日" in week:
             num = (date.today().weekday() + 2) % 7
             try:
                 return (num, weeks_ja[num])
             except IndexError:
-                return (0, "月")
+                return (1, "月")
         else:
-            return (0, "月")
+            return (1, "月")
 
 
 # 行を指定し
