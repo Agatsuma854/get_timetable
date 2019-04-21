@@ -1,4 +1,4 @@
-import datetime
+from datetime import date
 
 import os
 
@@ -51,22 +51,22 @@ class class_schedule_manager():
 
             for line in config:
                 # 学期の判定と決定
-                if (datetime.date.today().year == int(line[0])
-                        and datetime.date.today().month <= int(line[1])
-                        and datetime.date.today().day <= int(line[2])):
+                if (date.today().year == int(line[0])
+                        and date.today().month <= int(line[1])
+                        and date.today().day <= int(line[2])):
                     self.period = 'second'
 
             # 読み込むファイルの名前の生成
-            if datetime.date.today().month >= 4:
+            if date.today().month >= 4:
                 self.filename = (
-                    str(datetime.date.today().year)
+                    str(date.today().year)
                     + '_' + self.period
                     + '_' + myclass + '.csv'
                 )
                 print(self.filename)
             else:
                 self.filename = (
-                    str(datetime.date.today().year - 1)
+                    str(date.today().year - 1)
                     + '_' + 'second'
                     + '_' + myclass + '.csv'
                 )
@@ -74,7 +74,7 @@ class class_schedule_manager():
 
             # dict型に格納
             if day_of_the_week == 0:
-                self.datemem = datetime.date.today().weekday()
+                self.datemem = date.today().weekday()
                 if self.datemem > 4:
                     self.datemem = 0
             else:
@@ -119,9 +119,13 @@ class class_schedule_manager():
     def day_str_converter(self, week : str):
         weeks_ja = ["今日", "月", "火", "水", "木", "金"]
         if week in weeks_ja:
-            return (weeks_ja.index(week), week)
+            num = (
+                weeks_ja.index(week) if week != "今日"
+                else date.today().weekday() + 1
+            )
+            return (num, weeks_ja[num])
         elif "明日" in week:
-            num = (datetime.date.today().weekday() + 2) % 7
+            num = (date.today().weekday() + 2) % 7
             try:
                 return (num, weeks_ja[num])
             except IndexError:
