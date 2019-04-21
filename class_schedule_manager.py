@@ -119,11 +119,15 @@ class class_schedule_manager():
     def day_str_converter(self, week : str):
         weeks_ja = ["今日", "月", "火", "水", "木", "金"]
         if week in weeks_ja:
-            return weeks_ja.index(week)
+            return (weeks_ja.index(week), week)
         elif "明日" in week:
-            return datetime.date.today().weekday() + 2
+            num = datetime.date.today().weekday() + 2
+            try:
+                return (num, weeks_ja[num])
+            except IndexError:
+                return (-1, "Invalid")
         else:
-            return 0
+            return (-1, "Invalid")
 
 
 # 行を指定し
