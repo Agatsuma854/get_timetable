@@ -120,6 +120,8 @@ class class_schedule_manager():
         weeks_ja = ["今日", "月", "火", "水", "木", "金"]
         if week in weeks_ja:
             return weeks_ja.index(week)
+        elif "明日" in week:
+            return datetime.date.today().weekday() + 2
         else:
             return 0
 
