@@ -152,7 +152,7 @@ class class_schedule_manager():
             try:
                 return (num, weeks_ja[num])
             except IndexError:
-                # 土日で「今日」を指定したとき
+                # 金土で「明日」を指定したとき
                 return (1, "月")
 
         else:
@@ -162,7 +162,7 @@ class class_schedule_manager():
             try:
                 return (num, weeks_ja[num])
             except IndexError:
-                # 土日で「今日」を指定したとき
+                # 土日のとき
                 return (1, "月")
 
 
