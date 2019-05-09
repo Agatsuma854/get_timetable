@@ -60,14 +60,14 @@ class class_schedule_manager():
             if date.today().month >= 4:
                 self.filename = (
                     str(date.today().year)
-                    + '_' + self.period
-                    + '_' + myclass + '.csv'
+                    + '/' + self.period
+                    + '/' + myclass + '.csv'
                 )
             else:
                 self.filename = (
                     str(date.today().year - 1)
-                    + '_' + 'second'
-                    + '_' + myclass + '.csv'
+                    + '/' + 'second'
+                    + '/' + myclass + '.csv'
                 )
 
             # dict型に格納
