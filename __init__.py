@@ -1,1 +1,1 @@
-from .class_schedule_manager import class_schedule_manager
+from .class_schedule_manager import class_schedule_manager, day_str_converter

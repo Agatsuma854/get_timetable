@@ -60,14 +60,14 @@ class class_schedule_manager():
             if date.today().month >= 4:
                 self.filename = (
                     str(date.today().year)
-                    + '_' + self.period
-                    + '_' + myclass + '.csv'
+                    + '/' + self.period
+                    + '/' + myclass + '.csv'
                 )
             else:
                 self.filename = (
                     str(date.today().year - 1)
-                    + '_' + 'second'
-                    + '_' + myclass + '.csv'
+                    + '/' + 'second'
+                    + '/' + myclass + '.csv'
                 )
 
             # dict型に格納
@@ -116,60 +116,56 @@ class class_schedule_manager():
         ]
 
 
-    def day_str_converter(self, week : str):
-        """曜日または「今日」「明日」を引数として入れると
-        CSVの読み出す行とその日の曜日を返す
-        TODO 実装クソすぎ助けて
-        
-        Paramter
-        --------
-        week : str
-            検索する文字列
+def day_str_converter(week : str):
+    """曜日または「今日」「明日」を引数として入れると
+    CSVの読み出す行とその日の曜日を返す
+    TODO 実装クソすぎ助けて
+    
+    Paramter
+    --------
+    week : str
+        検索する文字列
 
-        Return
-        ------
-        tuple
-            ({CSVの読み出す行番号} : int, {曜日名} : str)
-        """
-        weeks_ja = ["今日", "月", "火", "水", "木", "金"]
+    Return
+    ------
+    tuple
+        ({CSVの読み出す行番号} : int, {曜日名} : str)
+    """
+    weeks_ja = ["今日", "月", "火", "水", "木", "金"]
 
-        search = [s for s in weeks_ja if s in week]
+    search = [s for s in weeks_ja if s in week]
 
-        if search:
-            week = search[0]
-            num = (
-                weeks_ja.index(week) if week != "今日"
-                else date.today().weekday() + 1
-            )
-            try:
-                return (num, weeks_ja[num])
-            except IndexError:
-                # 土日で「今日」を指定したとき
-                return (1, "月")
+    if search:
+        week = search[0]
+        num = (
+            weeks_ja.index(week) if week != "今日"
+            else date.today().weekday() + 1
+        )
+        try:
+            return (num, weeks_ja[num])
+        except IndexError:
+            # 土日で「今日」を指定したとき
+            return (1, "月")
 
-        elif "明日" in week:
-            num = (date.today().weekday() + 2) % 7
-            try:
-                return (num, weeks_ja[num])
-            except IndexError:
-                # 金土で「明日」を指定したとき
-                return (1, "月")
+    elif "明日" in week:
+        num = (date.today().weekday() + 2) % 7
+        try:
+            return (num, weeks_ja[num])
+        except IndexError:
+            # 金土で「明日」を指定したとき
+            return (1, "月")
 
-        else:
-            # 指定子と対応する要素がなかったときは
-            # 当日分(土日は月曜)を返す
-            num = date.today().weekday() + 1
-            try:
-                return (num, weeks_ja[num])
-            except IndexError:
-                # 土日のとき
-                return (1, "月")
+    else:
+        # 指定子と対応する要素がなかったときは
+        # 当日分(土日は月曜)を返す
+        num = date.today().weekday() + 1
+        try:
+            return (num, weeks_ja[num])
+        except IndexError:
+            # 土日のとき
+            return (1, "月")
 
 if __name__ == "__main__":
     # 2019:first:1-1.csv
     obj = class_schedule_manager()
     print(obj.get_schedule("1-1"))
-
-    obj = class_schedule_manager()
-    print(obj.day_str_converter("明日"))
-    print(obj.day_str_converter("水曜日"))
