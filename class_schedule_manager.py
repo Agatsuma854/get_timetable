@@ -164,8 +164,3 @@ def day_str_converter(week : str):
         except IndexError:
             # 土日のとき
             return (1, "月")
-
-if __name__ == "__main__":
-    # 2019:first:1-1.csv
-    obj = class_schedule_manager()
-    print(obj.get_schedule("1-1"))
