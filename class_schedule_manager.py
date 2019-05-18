@@ -149,9 +149,9 @@ def day_str_converter(week : str):
 
     elif "明日" in week:
         num = (date.today().weekday() + 2) % 7
-        try:
-            return (num, weeks_ja[num])
-        except IndexError:
+        if num != 0 and num != 6:
+                return (num, weeks_ja[num])
+        else:
             # 金土で「明日」を指定したとき
             return (1, "月")
 
