@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime, timedelta
 
 import os
 
@@ -116,7 +116,7 @@ class class_schedule_manager():
         ]
 
 
-def day_str_converter(week : str):
+def day_str_converter(week=""):
     """曜日または「今日」「明日」を引数として入れると
     CSVの読み出す行とその日の曜日を返す
     TODO 実装クソすぎ助けて
@@ -133,6 +133,9 @@ def day_str_converter(week : str):
     """
     weeks_ja = ["今日", "月", "火", "水", "木", "金"]
 
+    # 引数として入れられた文字列を、weeks_jaで部分一致検索
+    # 一致したものがweeks_ja配列内にあれば、weeks_jaの
+    # 一致した文字列をsearch配列に入れる
     search = [s for s in weeks_ja if s in week]
 
     if search:
@@ -156,9 +159,14 @@ def day_str_converter(week : str):
             return (1, "月")
 
     else:
-        # 指定子と対応する要素がなかったときは
-        # 当日分(土日は月曜)を返す
-        num = date.today().weekday() + 1
+        # 指定子と対応する要素がなかったとき
+
+        # 時間割機能への要望「4校終了後の16:00以降は翌日の時間割を」
+        # に合わせて、16時以降は翌日の時間割が配信されるように
+        # 使用時間を下記に変更する
+        use_time = datetime.now() + timedelta(hours=8)
+
+        num = use_time.weekday() + 1
         try:
             return (num, weeks_ja[num])
         except IndexError:
