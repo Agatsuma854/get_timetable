@@ -121,8 +121,8 @@ def day_str_converter(week=""):
     CSVの読み出す行とその日の曜日を返す
     TODO 実装クソすぎ助けて
     
-    Paramter
-    --------
+    Parameter
+    ---------
     week : str
         検索する文字列
 
