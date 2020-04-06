@@ -41,48 +41,40 @@ class class_schedule_manager():
             {1: ['地理', '矢澤', '教室'], 2: ['総合工学基礎', ...], ...}
             など
         """
-        # config.csvファイルの読み込み
-        with open(os.path.join(os.path.abspath(
-                os.path.dirname(__file__)), 'config.csv'),
-                newline='', encoding="utf-8") as config:
-
-            # 学期の初期化
+        # 学期の初期化
+        today = date.today()
+        if today.month >= 4 and today.month < 10:
             self.period = 'first'
+        else:
+            self.period = 'second'
 
-            for line in config:
-                # 学期の判定と決定
-                if (date.today().year == int(line[0])
-                        and date.today().month <= int(line[1])
-                        and date.today().day <= int(line[2])):
-                    self.period = 'second'
+        # 読み込むファイルの名前の生成
+        if today.month >= 4:
+            self.filename = (
+                str(today.year)
+                + '/' + self.period
+                + '/' + myclass + '.csv'
+            )
+        else:
+            self.filename = (
+                str(today.year - 1)
+                + '/' + self.period
+                + '/' + myclass + '.csv'
+            )
 
-            # 読み込むファイルの名前の生成
-            if date.today().month >= 4:
-                self.filename = (
-                    str(date.today().year)
-                    + '/' + self.period
-                    + '/' + myclass + '.csv'
-                )
-            else:
-                self.filename = (
-                    str(date.today().year - 1)
-                    + '/' + 'second'
-                    + '/' + myclass + '.csv'
-                )
+        # dict型に格納
+        if day_of_the_week == 0:
+            self.datemem = date.today().weekday()
+            if self.datemem > 4:
+                self.datemem = 0
+        else:
+            self.datemem = day_of_the_week - 1
+            if self.datemem > 4 or self.datemem < 0:
+                self.datemem = 0
 
-            # dict型に格納
-            if day_of_the_week == 0:
-                self.datemem = date.today().weekday()
-                if self.datemem > 4:
-                    self.datemem = 0
-            else:
-                self.datemem = day_of_the_week - 1
-                if self.datemem > 4 or self.datemem < 0:
-                    self.datemem = 0
-
-            cp = self._read_csv(self.datemem)
-            for i, data in enumerate(cp):
-                self.make_table[i + 1] = data.split(':')
+        cp = self._read_csv(self.datemem)
+        for i, data in enumerate(cp):
+            self.make_table[i + 1] = data.split(':')
 
         return self.make_table
 
