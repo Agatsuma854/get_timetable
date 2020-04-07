@@ -1,6 +1,11 @@
+from csv import reader
 from datetime import date, datetime, timedelta
-
 import os
+from typing import Dict, List, Tuple
+
+
+def ext_date(l: List[int]) -> date:
+    return date(l[0], l[1], l[2])
 
 
 class class_schedule_manager():
@@ -14,13 +19,14 @@ class class_schedule_manager():
     >>> m.get_schedule(l[0], weekday)
     {1: ['地理', '矢澤', '教室'], 2: ['総合工学基礎', ], }
     """
+
     def __init__(self, csv_dir=''):
         self.csv_dir = csv_dir
         self.filename = ''
         self.period = 'first'
         self.make_table = {}
 
-    def get_schedule(self, myclass : str, day_of_the_week=0):
+    def get_schedule(self, myclass: str, day_of_the_week=0) -> Dict[int, List[str]]:
         """ファイルの読み込みをし、使用しやすいような形式にした
         ものを返す
         Parameters
@@ -41,53 +47,45 @@ class class_schedule_manager():
             {1: ['地理', '矢澤', '教室'], 2: ['総合工学基礎', ...], ...}
             など
         """
-        # config.csvファイルの読み込み
-        with open(os.path.join(os.path.abspath(
-                os.path.dirname(__file__)), 'config.csv'),
-                newline='', encoding="utf-8") as config:
+        # 学期の初期化
+        today = date.today()
+        read_year = today.year if today.month >= 4 else today.year - 1
+        with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), str(read_year) + "/limit.csv"), "r", encoding="utf-8") as f:
+            rd = reader(f)
+            # border[0] = [first_start.year, first_start.m, first_start.d]
+            # border[1] = [second_start.y, second_start.m, second_start.d]
+            border = [[int(column) for column in row] for row in rd]
 
-            # 学期の初期化
-            self.period = 'first'
+            if today >= ext_date(border[0]) and today < ext_date(border[1]):
+                self.period = 'first'
+            elif today >= ext_date(border[1]) and today < ext_date(border[2]):
+                self.period = 'second'
 
-            for line in config:
-                # 学期の判定と決定
-                if (date.today().year == int(line[0])
-                        and date.today().month <= int(line[1])
-                        and date.today().day <= int(line[2])):
-                    self.period = 'second'
+        # 読み込むファイルの名前の生成
+        self.filename = (
+            str(read_year)
+            + '/' + self.period
+            + '/' + myclass + '.csv'
+        )
 
-            # 読み込むファイルの名前の生成
-            if date.today().month >= 4:
-                self.filename = (
-                    str(date.today().year)
-                    + '/' + self.period
-                    + '/' + myclass + '.csv'
-                )
-            else:
-                self.filename = (
-                    str(date.today().year - 1)
-                    + '/' + 'second'
-                    + '/' + myclass + '.csv'
-                )
+        # dict型に格納
+        if day_of_the_week == 0:
+            self.datemem = date.today().weekday()
+            if self.datemem > 4:
+                self.datemem = 0
+        else:
+            self.datemem = day_of_the_week - 1
+            if self.datemem > 4 or self.datemem < 0:
+                self.datemem = 0
 
-            # dict型に格納
-            if day_of_the_week == 0:
-                self.datemem = date.today().weekday()
-                if self.datemem > 4:
-                    self.datemem = 0
-            else:
-                self.datemem = day_of_the_week - 1
-                if self.datemem > 4 or self.datemem < 0:
-                    self.datemem = 0
-
-            cp = self._read_csv(self.datemem)
-            for i, data in enumerate(cp):
-                self.make_table[i + 1] = data.split(':')
+        cp = self._read_csv(self.datemem)
+        for i, data in enumerate(cp):
+            self.make_table[i + 1] = data.split(':')
 
         return self.make_table
 
     # 指定したCSVファイルを読み出し
-    def _read_csv(self, row_num : int):
+    def _read_csv(self, row_num: int) -> List[str]:
         """
         Parameter
         ---------
@@ -103,7 +101,7 @@ class class_schedule_manager():
             ファイルのコンマで要素を分けてリスト化したものを返す
         """
         with open(os.path.join(os.path.abspath(
-                os.path.dirname(__file__)), self.filename), 
+                os.path.dirname(__file__)), self.filename),
                 newline='', encoding="utf-8") as timetable:
             for i, row in enumerate(timetable):
                 if i == row_num:
@@ -116,11 +114,11 @@ class class_schedule_manager():
         ]
 
 
-def day_str_converter(week=""):
+def day_str_converter(week="") -> Tuple[int, str]:
     """曜日または「今日」「明日」を引数として入れると
     CSVの読み出す行とその日の曜日を返す
     TODO 実装クソすぎ助けて
-    
+
     Parameter
     ---------
     week : str
@@ -172,3 +170,9 @@ def day_str_converter(week=""):
         except IndexError:
             # 土日のとき
             return (1, "月")
+
+
+if __name__ == "__main__":
+    m = class_schedule_manager()
+    from pprint import pprint
+    pprint(m.get_schedule("IS4", 0))

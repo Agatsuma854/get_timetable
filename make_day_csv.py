@@ -3,7 +3,7 @@ from csv import writer as wr
 
 classes = (
     "1-1", "1-2", "1-3", "IS2", "IT2", "IE2",
-    "IS3", "IT3", "IE3", "IE4", "IS4", "IN4",
+    "IS3", "IT3", "IE3", "IE4", "IS4", "IT4",
     "IE5", "IS5", "IN5"
 )
 
